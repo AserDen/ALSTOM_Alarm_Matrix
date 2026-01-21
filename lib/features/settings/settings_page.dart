@@ -1,7 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../faults_list/faults_list_vm.dart';
 
@@ -10,20 +9,16 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.settingsTitle)),
+      appBar: AppBar(title: const Text('Settings')),
       body: ListView(
         padding: const EdgeInsets.all(12),
         children: [
-          Text(
-            l10n.dataSection,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          const Text('Data', style: TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           ElevatedButton.icon(
             icon: const Icon(Icons.upload_file),
-            label: Text(l10n.importExcel),
+            label: const Text('Import Excel (.xlsx)'),
             onPressed: () async {
               final res = await FilePicker.platform.pickFiles(
                 type: FileType.custom,
@@ -41,20 +36,23 @@ class SettingsPage extends ConsumerWidget {
 
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(l10n.importedRows(count))),
+                    SnackBar(content: Text('Imported: $count rows')),
                   );
                 }
               } catch (e) {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(l10n.importError(e.toString()))),
+                    SnackBar(content: Text('Import error: $e')),
                   );
                 }
               }
             },
           ),
           const SizedBox(height: 12),
-          Text(l10n.importTip),
+          const Text(
+            'Tip: Prefer alarm_matrix_analysis.xlsx (Sheet1_clean) for stable headers.\n'
+            'Fallback: sheet "1" is also supported.',
+          ),
         ],
       ),
     );
