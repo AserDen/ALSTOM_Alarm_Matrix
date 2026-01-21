@@ -28,7 +28,7 @@ class FaultsRepo {
 
     if (q.onlyWithAlarmItem) {
       query.where(
-        (t) => t.alarmItem.isNotNull() & t.alarmItem.notEquals(''),
+        (t) => t.alarmItem.isNotNull() & t.alarmItem.trim().isNotValue(''),
       );
     }
 
