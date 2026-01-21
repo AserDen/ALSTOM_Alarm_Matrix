@@ -1,6 +1,0 @@
-{
-  "appId": "com.alstom.alarmmatrix",
-  "appName": "ALSTOM Alarm Matrix",
-  "webDir": "web",
-  "bundledWebRuntime": false
-}
