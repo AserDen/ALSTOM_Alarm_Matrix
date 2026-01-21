@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/db.dart';
-import '../../data/repositories/faults_repo.dart';
 import '../../data/repositories/notes_repo.dart';
 import '../faults_list/faults_list_vm.dart';
 
