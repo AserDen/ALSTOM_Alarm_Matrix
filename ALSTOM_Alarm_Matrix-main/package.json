@@ -1,0 +1,38 @@
+{
+  "name": "alstom-alarm-matrix",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ALSTOM alarm matrix dashboard (web, desktop, android)",
+  "main": "electron/main.js",
+  "scripts": {
+    "build:web": "node scripts/build-web.js",
+    "electron:dev": "electron .",
+    "electron:build:win": "npm run build:web && electron-builder --win dir",
+    "android:prepare": "npm run build:web && npx cap sync android",
+    "android:build": "npm run android:prepare && cd android && ./gradlew assembleDebug"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^6.1.0",
+    "@capacitor/cli": "^6.1.0",
+    "@capacitor/core": "^6.1.0",
+    "electron": "^30.0.6",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.alstom.alarmmatrix",
+    "productName": "ALSTOM Alarm Matrix",
+    "files": [
+      "web/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": [
+        "dir"
+      ]
+    }
+  }
+}
