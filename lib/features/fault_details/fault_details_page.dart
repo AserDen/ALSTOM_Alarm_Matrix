@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'fault_details_vm.dart';
 
@@ -25,44 +24,38 @@ class _FaultDetailsPageState extends ConsumerState<FaultDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     final faultAsync = ref.watch(faultProvider(widget.faultNumber));
     final notesAsync = ref.watch(notesStreamProvider(widget.faultNumber));
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.faultTitle(widget.faultNumber)),
-      ),
+      appBar: AppBar(title: Text('Fault #${widget.faultNumber}')),
       body: faultAsync.when(
         data: (f) {
-          if (f == null) return Center(child: Text(l10n.notFound));
+          if (f == null) return const Center(child: Text('Not found'));
           final raw = _tryDecodeJson(f.rawJson);
 
           return ListView(
             padding: const EdgeInsets.all(12),
             children: [
-              _kv(l10n.subsetLabel, f.subset),
-              _kv(l10n.remoteAddress, f.remoteAddressOctal?.toString()),
+              _kv('Subset', f.subset),
+              _kv('Remote address (octal)', f.remoteAddressOctal?.toString()),
               const SizedBox(height: 8),
               Text(f.failureText, style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 16),
-              Text(
-                l10n.alarmSection,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
+              const Text('Alarm', style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 6),
-              _kv(l10n.alarmItem, f.alarmItem),
-              _kv(l10n.designation, f.designation),
-              _kv(l10n.dcsGroup, f.dcsGroup),
-              _kv(l10n.logic, f.logic),
-              _kv(l10n.tempo, f.tempo),
-              _kv(l10n.condition, f.condition),
+              _kv('ALARM ITEM', f.alarmItem),
+              _kv('DESIGNATION', f.designation),
+              _kv('DCS GROUP', f.dcsGroup),
+              _kv('LOGIC', f.logic),
+              _kv('TEMPO', f.tempo),
+              _kv('CONDITION', f.condition),
               const SizedBox(height: 16),
               ExpansionTile(
-                title: Text(l10n.otherFields),
+                title: const Text('Other fields (raw)'),
                 children: [
                   if (raw == null)
-                    ListTile(title: Text(l10n.rawJsonInvalid)),
+                    const ListTile(title: Text('rawJson is not valid JSON')),
                   if (raw != null)
                     ...raw.entries
                         .where((e) => e.key.trim().isNotEmpty)
@@ -76,18 +69,15 @@ class _FaultDetailsPageState extends ConsumerState<FaultDetailsPage> {
                 ],
               ),
               const SizedBox(height: 16),
-              Text(
-                l10n.notes,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
+              const Text('Notes', style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               TextField(
                 controller: _noteCtrl,
                 minLines: 1,
                 maxLines: 4,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  hintText: l10n.addNoteHint,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Add note...',
                 ),
               ),
               const SizedBox(height: 8),
@@ -102,12 +92,12 @@ class _FaultDetailsPageState extends ConsumerState<FaultDetailsPage> {
                   _noteCtrl.clear();
                 },
                 icon: const Icon(Icons.add),
-                label: Text(l10n.addNoteButton),
+                label: const Text('Add note'),
               ),
               const SizedBox(height: 8),
               notesAsync.when(
                 data: (notes) {
-                  if (notes.isEmpty) return Text(l10n.noNotesYet);
+                  if (notes.isEmpty) return const Text('No notes yet.');
                   return Column(
                     children: notes
                         .map(
@@ -127,13 +117,13 @@ class _FaultDetailsPageState extends ConsumerState<FaultDetailsPage> {
                   );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (e, _) => Text(l10n.notesError(e.toString())),
+                error: (e, _) => Text('Notes error: $e'),
               ),
             ],
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text(l10n.faultsError(e.toString()))),
+        error: (e, _) => Center(child: Text('Error: $e')),
       ),
     );
   }
