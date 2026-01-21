@@ -80,7 +80,7 @@ class ExcelImporter {
 
         await db.into(db.faults).insertOnConflictUpdate(
               FaultsCompanion.insert(
-                faultNumber: faultNumber,
+                faultNumber: Value(faultNumber),
                 remoteAddressOctal: Value(remoteAddress),
                 subset: Value(subset),
                 failureText: failureText,
