@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/db.dart';
 import '../fault_details/fault_details_page.dart';
@@ -11,13 +10,12 @@ class FaultsListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
     final faultsAsync = ref.watch(faultsStreamProvider);
     final subsetsAsync = ref.watch(subsetsListProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.appTitle),
+        title: const Text('Alarm Matrix'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -30,10 +28,10 @@ class FaultsListPage extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 12, 12, 6),
             child: TextField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: l10n.searchHint,
-                border: const OutlineInputBorder(),
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                hintText: 'Search: fault number / text / alarm item / designation...',
+                border: OutlineInputBorder(),
               ),
               onChanged: (v) => ref.read(searchProvider.notifier).state = v,
             ),
@@ -46,22 +44,19 @@ class FaultsListPage extends ConsumerWidget {
                   child: subsetsAsync.when(
                     data: (items) {
                       final subset = ref.watch(subsetProvider);
-                      return DropdownButtonFormField<String?>(
-                        key: ValueKey<String?>(subset),
-                        initialValue:
-                            (subset == null || subset.isEmpty) ? null : subset,
-                        decoration: InputDecoration(
-                          labelText: l10n.subsetLabel,
-                          border: const OutlineInputBorder(),
+                      return DropdownButtonFormField<String>(
+                        value: (subset == null || subset.isEmpty) ? null : subset,
+                        decoration: const InputDecoration(
+                          labelText: 'Subset',
+                          border: OutlineInputBorder(),
                         ),
                         items: [
-                          DropdownMenuItem<String?>(
+                          const DropdownMenuItem<String>(
                             value: null,
-                            child: Text(l10n.allSubsets),
+                            child: Text('All'),
                           ),
                           ...items.map(
-                            (s) =>
-                                DropdownMenuItem<String?>(value: s, child: Text(s)),
+                            (s) => DropdownMenuItem(value: s, child: Text(s)),
                           ),
                         ],
                         onChanged: (v) =>
@@ -72,14 +67,14 @@ class FaultsListPage extends ConsumerWidget {
                       height: 56,
                       child: Center(child: CircularProgressIndicator()),
                     ),
-                    error: (e, _) => Text(l10n.subsetLoadError(e.toString())),
+                    error: (e, _) => Text('Subset load error: $e'),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: SwitchListTile.adaptive(
                     contentPadding: EdgeInsets.zero,
-                    title: Text(l10n.onlyWithAlarmItem),
+                    title: const Text('Only with ALARM ITEM'),
                     value: ref.watch(onlyWithAlarmProvider),
                     onChanged: (v) =>
                         ref.read(onlyWithAlarmProvider.notifier).state = v,
@@ -93,7 +88,7 @@ class FaultsListPage extends ConsumerWidget {
             child: faultsAsync.when(
               data: (items) => _FaultList(items: items),
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, _) => Center(child: Text(l10n.faultsError(e.toString()))),
+              error: (e, _) => Center(child: Text('Error: $e')),
             ),
           ),
         ],
@@ -108,9 +103,8 @@ class _FaultList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     if (items.isEmpty) {
-      return Center(child: Text(l10n.noRecords));
+      return const Center(child: Text('No records. Import Excel in Settings.'));
     }
     return ListView.separated(
       itemCount: items.length,

@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:drift/drift.dart';
 import 'package:excel/excel.dart';
 
@@ -78,7 +80,7 @@ class ExcelImporter {
 
         await db.into(db.faults).insertOnConflictUpdate(
               FaultsCompanion.insert(
-                faultNumber: Value(faultNumber),
+                faultNumber: faultNumber,
                 remoteAddressOctal: Value(remoteAddress),
                 subset: Value(subset),
                 failureText: failureText,
