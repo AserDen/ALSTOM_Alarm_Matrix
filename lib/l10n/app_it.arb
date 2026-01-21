@@ -1,0 +1,67 @@
+{
+  "appTitle": "Alarm Matrix",
+  "settingsTitle": "Impostazioni",
+  "searchHint": "Cerca: numero guasto / testo / alarm item / designation...",
+  "subsetLabel": "Subset",
+  "allSubsets": "Tutti",
+  "onlyWithAlarmItem": "Solo con ALARM ITEM",
+  "noRecords": "Nessun record. Importa l'Excel nelle Impostazioni.",
+  "faultTitle": "Guasto #{faultNumber}",
+  "notFound": "Non trovato",
+  "remoteAddress": "Remote address (octal)",
+  "alarmSection": "Alarm",
+  "alarmItem": "ALARM ITEM",
+  "designation": "DESIGNATION",
+  "dcsGroup": "DCS GROUP",
+  "logic": "LOGIC",
+  "tempo": "TEMPO",
+  "condition": "CONDITION",
+  "otherFields": "Altri campi (raw)",
+  "rawJsonInvalid": "rawJson non è un JSON valido",
+  "notes": "Note",
+  "addNoteHint": "Aggiungi nota...",
+  "addNoteButton": "Aggiungi nota",
+  "noNotesYet": "Nessuna nota ancora.",
+  "importExcel": "Importa Excel (.xlsx)",
+  "dataSection": "Dati",
+  "importedRows": "Importati: {count} righe",
+  "importError": "Errore di importazione: {error}",
+  "importTip": "Suggerimento: preferisci alarm_matrix_analysis.xlsx (Sheet1_clean) per intestazioni stabili.\nÈ supportato anche il foglio \"1\".",
+  "subsetLoadError": "Errore di caricamento subset: {error}",
+  "faultsError": "Errore: {error}",
+  "notesError": "Errore note: {error}",
+  "@faultTitle": {
+    "placeholders": {
+      "faultNumber": {
+        "type": "int"
+      }
+    }
+  },
+  "@importedRows": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@importError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@subsetLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@faultsError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@notesError": {
+    "placeholders": {
+      "error": {}
+    }
+  }
+}
