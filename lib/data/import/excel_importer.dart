@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'dart:typed_data';
-import 'package:excel/excel.dart';
 import 'package:drift/drift.dart';
+import 'package:excel/excel.dart';
+
 import '../db.dart';
+import 'column_map.dart';
 
 class ExcelImporter {
   final AppDb db;
@@ -11,50 +12,52 @@ class ExcelImporter {
   Future<int> importBytes(Uint8List bytes) async {
     final excel = Excel.decodeBytes(bytes);
 
-    Sheet? sheet = excel.tables['Sheet1_clean'] ?? excel.tables['1'];
+    final sheet = excel.tables['Sheet1_clean'] ?? excel.tables['1'];
     if (sheet == null) {
       throw Exception('Не найден лист Sheet1_clean или 1');
     }
+    if (sheet.rows.isEmpty) return 0;
 
-    // Первая строка — заголовки
-    final headerRow = sheet.rows.first;
-    final headers = headerRow.map((c) => _cellToString(c)).toList();
+    final headers = sheet.rows.first.map((c) => _cellToString(c)).toList();
+    final headerNorm = headers.map(ColumnMap.norm).toList();
 
-    // Индексы нужных колонок (по названиям)
-    int idx(String name) => headers.indexWhere(
-      (h) => h.trim().toLowerCase() == name.trim().toLowerCase(),
-    );
+    int idxByAliases(String key) {
+      final aliases = ColumnMap.headerAliases[key] ?? const [];
+      for (final a in aliases) {
+        final i = headerNorm.indexOf(ColumnMap.norm(a));
+        if (i >= 0) return i;
+      }
+      return -1;
+    }
 
-    final iFault = idx('Fault number                                  ( display on local panel )');
-    final iAddr  = idx('Address Remote                              (OCTAL)');
-    final iSubset= idx('Subsets');
-    final iFail  = idx('FAILURE:');
-
-    final iAlarmItem = idx('ALARM ITEM:');
-    final iDesignation = idx('DESIGNATION:');
-    final iGroup = idx('DCS GROUP:');
-    final iLogic = idx('LOGIC:');
-    final iCond = idx('CONDITION:');
-    final iTempo = idx('TEMPO:');
+    final iFault = idxByAliases(ColumnMap.faultNumber);
+    final iFail = idxByAliases(ColumnMap.failure);
 
     if (iFault < 0 || iFail < 0) {
-      throw Exception('Не найдены обязательные колонки Fault number / FAILURE:');
+      throw Exception('Не найдены обязательные колонки Fault number / FAILURE');
     }
+
+    final iAddr = idxByAliases(ColumnMap.remoteAddress);
+    final iSubset = idxByAliases(ColumnMap.subsets);
+    final iAlarmItem = idxByAliases(ColumnMap.alarmItem);
+    final iDesignation = idxByAliases(ColumnMap.designation);
+    final iGroup = idxByAliases(ColumnMap.dcsGroup);
+    final iLogic = idxByAliases(ColumnMap.logic);
+    final iCond = idxByAliases(ColumnMap.condition);
+    final iTempo = idxByAliases(ColumnMap.tempo);
 
     int imported = 0;
 
     await db.transaction(() async {
-      // пропускаем заголовок
       for (int r = 1; r < sheet.rows.length; r++) {
         final row = sheet.rows[r];
         if (row.isEmpty) continue;
 
-        final faultStr = _get(row, iFault);
-        final faultNumber = int.tryParse(faultStr);
+        final faultNumber = int.tryParse(_get(row, iFault));
         if (faultNumber == null) continue;
 
-        final failureText = _get(row, iFail);
-        if (failureText.trim().isEmpty) continue;
+        final failureText = _get(row, iFail).trim();
+        if (failureText.isEmpty) continue;
 
         final remoteAddress = int.tryParse(_get(row, iAddr));
         final subset = _nullIfBlank(_get(row, iSubset));
@@ -66,7 +69,6 @@ class ExcelImporter {
         final condition = _nullIfBlank(_get(row, iCond));
         final tempo = _nullIfBlank(_get(row, iTempo));
 
-        // rawJson = все колонки как key-value
         final rawMap = <String, dynamic>{};
         for (int c = 0; c < headers.length; c++) {
           final key = headers[c].trim();
@@ -75,20 +77,20 @@ class ExcelImporter {
         }
 
         await db.into(db.faults).insertOnConflictUpdate(
-          FaultsCompanion.insert(
-            faultNumber: faultNumber,
-            remoteAddressOctal: Value(remoteAddress),
-            subset: Value(subset),
-            failureText: failureText,
-            alarmItem: Value(alarmItem),
-            designation: Value(designation),
-            dcsGroup: Value(dcsGroup),
-            logic: Value(logic),
-            condition: Value(condition),
-            tempo: Value(tempo),
-            rawJson: jsonEncode(rawMap),
-          ),
-        );
+              FaultsCompanion.insert(
+                faultNumber: Value(faultNumber),
+                remoteAddressOctal: Value(remoteAddress),
+                subset: Value(subset),
+                failureText: failureText,
+                alarmItem: Value(alarmItem),
+                designation: Value(designation),
+                dcsGroup: Value(dcsGroup),
+                logic: Value(logic),
+                condition: Value(condition),
+                tempo: Value(tempo),
+                rawJson: jsonEncode(rawMap),
+              ),
+            );
 
         imported++;
       }

@@ -1,0 +1,67 @@
+{
+  "appTitle": "Alarm Matrix",
+  "settingsTitle": "Настройки",
+  "searchHint": "Поиск: номер аварии / текст / alarm item / designation...",
+  "subsetLabel": "Subset",
+  "allSubsets": "Все",
+  "onlyWithAlarmItem": "Только с ALARM ITEM",
+  "noRecords": "Нет записей. Импортируйте Excel в Настройках.",
+  "faultTitle": "Fault №{faultNumber}",
+  "notFound": "Не найдено",
+  "remoteAddress": "Remote address (octal)",
+  "alarmSection": "Alarm",
+  "alarmItem": "ALARM ITEM",
+  "designation": "DESIGNATION",
+  "dcsGroup": "DCS GROUP",
+  "logic": "LOGIC",
+  "tempo": "TEMPO",
+  "condition": "CONDITION",
+  "otherFields": "Другие поля (raw)",
+  "rawJsonInvalid": "rawJson не является корректным JSON",
+  "notes": "Заметки",
+  "addNoteHint": "Добавить заметку...",
+  "addNoteButton": "Добавить заметку",
+  "noNotesYet": "Заметок пока нет.",
+  "importExcel": "Импорт Excel (.xlsx)",
+  "dataSection": "Данные",
+  "importedRows": "Импортировано: {count} строк",
+  "importError": "Ошибка импорта: {error}",
+  "importTip": "Совет: используйте alarm_matrix_analysis.xlsx (Sheet1_clean) для стабильных заголовков.\nТакже поддерживается лист \"1\".",
+  "subsetLoadError": "Ошибка загрузки subset: {error}",
+  "faultsError": "Ошибка: {error}",
+  "notesError": "Ошибка заметок: {error}",
+  "@faultTitle": {
+    "placeholders": {
+      "faultNumber": {
+        "type": "int"
+      }
+    }
+  },
+  "@importedRows": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@importError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@subsetLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@faultsError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@notesError": {
+    "placeholders": {
+      "error": {}
+    }
+  }
+}
