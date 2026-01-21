@@ -44,20 +44,19 @@ class FaultsListPage extends ConsumerWidget {
                   child: subsetsAsync.when(
                     data: (items) {
                       final subset = ref.watch(subsetProvider);
-                      return DropdownButtonFormField<String?>(
+                      return DropdownButtonFormField<String>(
                         value: (subset == null || subset.isEmpty) ? null : subset,
                         decoration: const InputDecoration(
                           labelText: 'Subset',
                           border: OutlineInputBorder(),
                         ),
                         items: [
-                          const DropdownMenuItem<String?>(
+                          const DropdownMenuItem<String>(
                             value: null,
                             child: Text('All'),
                           ),
                           ...items.map(
-                            (s) =>
-                                DropdownMenuItem<String?>(value: s, child: Text(s)),
+                            (s) => DropdownMenuItem(value: s, child: Text(s)),
                           ),
                         ],
                         onChanged: (v) =>
