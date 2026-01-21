@@ -1,0 +1,67 @@
+{
+  "appTitle": "Alarm Matrix",
+  "settingsTitle": "Settings",
+  "searchHint": "Search: fault number / text / alarm item / designation...",
+  "subsetLabel": "Subset",
+  "allSubsets": "All",
+  "onlyWithAlarmItem": "Only with ALARM ITEM",
+  "noRecords": "No records. Import Excel in Settings.",
+  "faultTitle": "Fault #{faultNumber}",
+  "notFound": "Not found",
+  "remoteAddress": "Remote address (octal)",
+  "alarmSection": "Alarm",
+  "alarmItem": "ALARM ITEM",
+  "designation": "DESIGNATION",
+  "dcsGroup": "DCS GROUP",
+  "logic": "LOGIC",
+  "tempo": "TEMPO",
+  "condition": "CONDITION",
+  "otherFields": "Other fields (raw)",
+  "rawJsonInvalid": "rawJson is not valid JSON",
+  "notes": "Notes",
+  "addNoteHint": "Add note...",
+  "addNoteButton": "Add note",
+  "noNotesYet": "No notes yet.",
+  "importExcel": "Import Excel (.xlsx)",
+  "dataSection": "Data",
+  "importedRows": "Imported: {count} rows",
+  "importError": "Import error: {error}",
+  "importTip": "Tip: Prefer alarm_matrix_analysis.xlsx (Sheet1_clean) for stable headers.\nFallback: sheet \"1\" is also supported.",
+  "subsetLoadError": "Subset load error: {error}",
+  "faultsError": "Error: {error}",
+  "notesError": "Notes error: {error}",
+  "@faultTitle": {
+    "placeholders": {
+      "faultNumber": {
+        "type": "int"
+      }
+    }
+  },
+  "@importedRows": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@importError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@subsetLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@faultsError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@notesError": {
+    "placeholders": {
+      "error": {}
+    }
+  }
+}

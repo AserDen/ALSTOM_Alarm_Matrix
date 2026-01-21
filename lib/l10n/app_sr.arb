@@ -1,0 +1,67 @@
+{
+  "appTitle": "Alarm Matrix",
+  "settingsTitle": "Podešavanja",
+  "searchHint": "Pretraga: broj kvara / tekst / alarm item / designation...",
+  "subsetLabel": "Subset",
+  "allSubsets": "Svi",
+  "onlyWithAlarmItem": "Samo sa ALARM ITEM",
+  "noRecords": "Nema zapisa. Uvezite Excel u Podešavanjima.",
+  "faultTitle": "Kvar #{faultNumber}",
+  "notFound": "Nije pronađeno",
+  "remoteAddress": "Remote address (octal)",
+  "alarmSection": "Alarm",
+  "alarmItem": "ALARM ITEM",
+  "designation": "DESIGNATION",
+  "dcsGroup": "DCS GROUP",
+  "logic": "LOGIC",
+  "tempo": "TEMPO",
+  "condition": "CONDITION",
+  "otherFields": "Ostala polja (raw)",
+  "rawJsonInvalid": "rawJson nije validan JSON",
+  "notes": "Beleške",
+  "addNoteHint": "Dodaj belešku...",
+  "addNoteButton": "Dodaj belešku",
+  "noNotesYet": "Još nema beleški.",
+  "importExcel": "Uvezi Excel (.xlsx)",
+  "dataSection": "Podaci",
+  "importedRows": "Uvezeno: {count} redova",
+  "importError": "Greška pri uvozu: {error}",
+  "importTip": "Savet: koristite alarm_matrix_analysis.xlsx (Sheet1_clean) za stabilne zaglavlja.\nPodržan je i list \"1\".",
+  "subsetLoadError": "Greška pri učitavanju subset-a: {error}",
+  "faultsError": "Greška: {error}",
+  "notesError": "Greška beleški: {error}",
+  "@faultTitle": {
+    "placeholders": {
+      "faultNumber": {
+        "type": "int"
+      }
+    }
+  },
+  "@importedRows": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@importError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@subsetLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@faultsError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@notesError": {
+    "placeholders": {
+      "error": {}
+    }
+  }
+}
